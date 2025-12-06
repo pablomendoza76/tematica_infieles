@@ -1,0 +1,534 @@
+/* ============================================================
+   VARIABLES — PALETA PREMIUM
+============================================================ */
+$dark-bg: #24170f;
+$beige-bg: #f4e2c2;
+$beige-card: #f7e3c7;
+$beige-light: #fff4e2;
+$text-dark: #3a2a20;
+$accent: #f29a40;
+$accent-strong: #d87a17;
+$white: #ffffff;
+
+/* Tipografía */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Lora:wght@500;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: $text-dark;
+}
+
+/* ============================================================
+   FONDO GENERAL + ANIMACIONES DE BURBUJAS
+============================================================ */
+.page-bg {
+  position: fixed;
+  inset: 0;
+  background: $dark-bg;
+  overflow: hidden;
+  z-index: -5;
+}
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(45px);
+  opacity: 0.3;
+  animation: bubbleMove 14s infinite ease-in-out alternate;
+}
+
+.b1 { width: 240px; height: 240px; background: #ffb97a; top: 10%; left: 8%; animation-duration: 16s; }
+.b2 { width: 280px; height: 280px; background: #ffd4a2; top: 20%; right: 10%; animation-duration: 20s; }
+.b3 { width: 340px; height: 340px; background: #ffb36b; bottom: 8%; left: 12%; animation-duration: 26s; }
+.b4 { width: 260px; height: 260px; background: #ffd8b0; bottom: 12%; right: 14%; animation-duration: 22s; }
+
+@keyframes bubbleMove {
+  0% { transform: translate(0,0) scale(1); }
+  40% { transform: translate(25px, -35px) scale(1.08); }
+  80% { transform: translate(-20px, 10px) scale(0.97); }
+  100% { transform: translate(0,0) scale(1); }
+}
+
+/* ============================================================
+   LAYOUT
+============================================================ */
+.layout {
+  display: flex;
+  max-width: 1300px;
+  margin: 70px auto;
+  padding: 20px;
+  gap: 55px;
+  align-items: flex-start;
+}
+
+/* ============================================================
+   COLUMNA IZQUIERDA — LOGO + TEXTO EDITORIAL
+============================================================ */
+.intro-box {
+  color: $white;
+  width: 50%;
+  padding-top: 10px;
+}
+
+/* -------- ENCABEZADO LOGO + TEXTO ---------- */
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 25px;
+}
+
+.logo-img {
+  width: 155px;
+  height: auto;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-title {
+  font-family: 'Lora', serif;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  color: #f5dcb6;
+  text-transform: uppercase;
+}
+
+.brand-sub {
+  font-size: 15px;
+  color: #e4c9a4;
+  opacity: 0.9;
+  margin-top: 4px;
+}
+
+/* -------- TEXTO EDITORIAL ---------- */
+.tag {
+  display: inline-block;
+  padding: 8px 22px;
+  border: 1.5px solid $accent;
+  border-radius: 22px;
+  font-size: 13px;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  color: $accent;
+}
+
+.intro-heading {
+  font-size: 38px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  line-height: 1.2;
+  font-family: 'Lora', serif;
+}
+
+.intro-text {
+  font-size: 17px;
+  line-height: 1.65;
+  opacity: 0.9;
+  margin-bottom: 15px;
+  max-width: 480px;
+}
+
+.intro-list li {
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.footer-note {
+  margin-top: 35px;
+  opacity: 0.6;
+  font-size: 13px;
+}
+
+/* ============================================================
+   FORMULARIO — CARD PREMIUM + ANIMACIONES
+============================================================ */
+.form-wrapper {
+  width: 48%;
+  background: $beige-card;
+  padding: 45px;
+  border-radius: 26px;
+  box-shadow: 0 30px 55px rgba(0,0,0,0.25);
+  animation: cardEntrance 0.8s cubic-bezier(.17,.67,.55,1.35);
+}
+
+@keyframes cardEntrance {
+  0% { transform: scale(.85) translateY(40px); opacity: 0; }
+  60% { transform: scale(1.03) translateY(0); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.form-title {
+  color: $accent;
+  font-size: 15px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.form-subtitle {
+  font-size: 30px;
+  font-weight: 700;
+  color: $text-dark;
+  margin-bottom: 4px;
+  font-family: 'Lora', serif;
+}
+
+.form-desc {
+  color: #6a584d;
+  margin-bottom: 25px;
+}
+
+/* ============================================================
+   INPUTS — EFECTOS PREMIUM
+============================================================ */
+.input-row {
+  display: flex;
+  gap: 20px;
+}
+
+.input-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: $text-dark;
+}
+
+.input-group input {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 2px solid #d8c4ae;
+  background: $beige-light;
+  font-size: 16px;
+  transition: .25s ease;
+  animation: inputAppear .6s ease-out;
+}
+
+@keyframes inputAppear {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.input-group input:active {
+  transform: scale(0.97);
+}
+
+.input-group input:focus {
+  border-color: $accent;
+  background: lighten($beige-light, 5%);
+  box-shadow: 0 0 12px rgba(242,154,64,0.55);
+  animation: glowPulse 1.4s infinite ease-in-out;
+}
+
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 6px rgba(242,154,64,0.45); }
+  50% { box-shadow: 0 0 14px rgba(242,154,64,0.75); }
+  100% { box-shadow: 0 0 6px rgba(242,154,64,0.45); }
+}
+
+/* ============================================================
+   SUBIDA DE FOTO/VIDEO
+============================================================ */
+.media-row {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin: 20px 0 10px;
+}
+
+.media-upload { width: 100%; }
+
+.upload-btn {
+  background: $white;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 2px solid #d8c4ae;
+  cursor: pointer;
+  display: inline-block;
+  transition: 0.25s ease;
+}
+
+.upload-btn:hover {
+  border-color: $accent;
+  transform: scale(1.02);
+}
+
+.upload-btn input { display: none; }
+
+.media-preview img,
+.media-preview video {
+  width: 100%;
+  margin-top: 12px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+/* ============================================================
+   BOTONES
+============================================================ */
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.btn-clear {
+  background: $white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: 2px solid #d8c4ae;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.btn-clear:hover {
+  transform: scale(1.03);
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, $accent, $accent-strong);
+  padding: 12px 28px;
+  border-radius: 12px;
+  color: $white;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 12px 26px rgba(242,154,64,0.45);
+  transition: 0.25s ease;
+}
+
+.btn-submit:hover {
+  transform: translateY(-3px) scale(1.03);
+}
+
+/* ============================================================
+   MODAL
+============================================================ */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeModal .3s ease-out;
+}
+
+@keyframes fadeModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background: $beige-card;
+  padding: 40px;
+  border-radius: 22px;
+  width: 420px;
+  text-align: center;
+  box-shadow: 0 30px 55px rgba(0,0,0,0.35);
+  animation: modalPop 0.7s cubic-bezier(.19,.67,.47,1.35);
+}
+
+@keyframes modalPop {
+  0% { transform: perspective(600px) rotateX(70deg) scale(.6); opacity: 0; }
+  55% { transform: perspective(600px) rotateX(0deg) scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.btn-close {
+  margin-top: 20px;
+  padding: 11px 22px;
+  background: $accent;
+  color: $white;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.btn-close:hover {
+  background: $accent-strong;
+  transform: scale(1.05);
+}
+
+
+@keyframes fadeModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background: $beige-card;
+  padding: 40px;
+  border-radius: 22px;
+  width: 420px;
+  text-align: center;
+  box-shadow: 0 30px 55px rgba(0,0,0,0.35);
+  animation: modalPop 0.7s cubic-bezier(.19,.67,.47,1.35);
+}
+
+@keyframes modalPop {
+  0% { transform: perspective(600px) rotateX(70deg) scale(.6); opacity: 0; }
+  55% { transform: perspective(600px) rotateX(0deg) scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.btn-close {
+  margin-top: 20px;
+  padding: 11px 22px;
+  background: $accent;
+  color: $white;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.btn-close:hover {
+  background: $accent-strong;
+  transform: scale(1.05);
+}
+
+@media (max-width: 480px) {
+
+  /* Eliminar efecto de zoom en móviles */
+  .form-wrapper {
+    width: 100%;
+    padding: 18px;
+    border-radius: 16px;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.18); /* mucho más suave */
+    transform: none !important;
+    animation: none !important; /* desactiva el efecto pop del card */
+  }
+
+  .layout {
+    flex-direction: column;
+    margin: 10px auto;
+    padding: 10px;
+    gap: 20px;
+  }
+
+  /* Burbujas más pequeñas y menos brillantes */
+  .bubble {
+    filter: blur(20px);
+    opacity: .18;
+  }
+
+  .b1, .b2, .b3, .b4 {
+    width: 110px;
+    height: 110px;
+  }
+
+  .intro-box {
+    width: 100%;
+    text-align: center;
+    padding: 0 5px;
+  }
+
+  /* Tipografías más equilibradas */
+  .brand-title {
+    font-size: 24px;
+    line-height: 1.2;
+  }
+
+  .intro-heading {
+    font-size: 22px;
+  }
+
+  .intro-text {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .intro-list li {
+    font-size: 13px;
+  }
+
+  /* Inputs más compactos */
+  .input-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .input-group input {
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 10px;
+  }
+
+  /* Media uploader ajustado */
+  .media-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .media-circle {
+    width: 60px;
+    height: 60px;
+    font-size: 11px;
+  }
+
+  .upload-btn {
+    width: 100%;
+    text-align: center;
+    padding: 10px 14px;
+  }
+
+  /* Botones */
+  .form-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-submit,
+  .btn-clear {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+  }
+
+  /* Modal */
+  .modal-content {
+    width: 90%;
+    padding: 22px;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    animation: none; /* quita zoom */
+  }
+
+  .modal-content h2 {
+    font-size: 18px;
+  }
+}
+
+/* ===============================
+   Versión móvil (responsivo)
+=============================== */
+@media (max-width: 480px) {
+
+  .header-logo {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .logo-img {
+    width: 70px;
+  }
+
+  .brand-title {
+    font-size: 26px !important;
+  }
+
+  .brand-sub {
+    font-size: 13px;
+  }
+}
