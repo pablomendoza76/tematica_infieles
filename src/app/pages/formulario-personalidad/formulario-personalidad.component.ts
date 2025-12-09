@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FirebaseFormService } from '../../services/firebase-form.service';
+
 
 @Component({
   selector: 'app-formulario-personalidad',
@@ -12,149 +13,149 @@ import { FirebaseFormService } from '../../services/firebase-form.service';
 })
 export class FormularioPersonalidadComponent {
 
-  // Formulario principal
+  private firebaseService= inject(FirebaseFormService);
   formulario: FormGroup;
+  
 
-  // Archivo cargado por el usuario
-  archivo: File | null = null;
+  mostrarIntroModal = true;
+  mostrarResultado = false;
+  cargando = false;
+  mostrarCupon = false;
+  progresoCarga = 0;
 
-  // Datos de vista previa
-  previewUrl: string | null = null;
-  isImage = false;
-  isVideo = false;
-
-  // Control del modal
-  mostrarModal = false;
-
-  // Mensaje aleatorio seleccionado
   mensajeFinal = '';
+  tituloResultado = '';
 
-  // Para que el formulario no se pierda al abrir el modal
-  formSnapshot: any = null;
+  enviando = false;
 
-  // Lista de frases posibles
   frases = [
-    "Fiel pero con pinta de sospechoso profesional",
-    "Infiel imaginario, fiel en la vida real",
-    "Fiel certificado, tentaciones rechazadas",
-    "Infiel de chiste, leal de corazón",
-    "Fiel 99%, el 1% es puro meme",
-    "Infiel en teorías, fiel en prácticas",
-    "Fiel aprobado por la vida, reprobado por los chismes",
-    "Infiel en los test, fiel en la realidad",
-    "Fiel pero mal interpretado por las estadísticas",
-    "Infiel según los rumores, fiel según tu alma",
-    "Fiel con historial limpio",
-    "Infiel nivel broma, nada serio",
-    "Fiel con corazón blindado",
-    "Infiel con cero pruebas, solo risas",
-    "Fiel modo experto activado",
-    "Infiel fallido, fiel por destino",
-    "Fiel con exceso de ternura",
-    "Infiel descartado por el sistema",
-    "Fiel reconocido internacionalmente",
-    "Infiel en caricaturas, fiel en la vida cotidiana"
+    "Dicen que tu amor es tan bonito que hasta los celos te quedan tiernos.",
+    "Que cuando quieres, quieres tan fuerte que hasta el Wi-Fi se pone estable.",
+    "Hablan de ti como alguien fiel… pero también como alguien que se roba el último pedazo de comida.",
+    "Dicen que amas tan rico que hasta los domingos parecen viernes.",
+    "Que contigo el corazón late bonito… y a veces más rápido cuando sonríes así sin aviso.",
+    "Dicen que tu forma de amar da paz… excepto cuando te da por extrañarme de golpe.",
+    "Que eres tan estable que hasta mi ansiedad te quiere.",
+    "Dicen que contigo no hay dudas… solo ganas.",
+    "Hablan de ti como alguien que no juega… pero sí enamora sin querer.",
+    "Dicen que tu lealtad es tan seria que hasta mis inseguridades descansan.",
+    "Que cuando abrazas, el mundo se arregla… aunque sea solo por 7 segundos.",
+    "Dicen que tu amor es suavecito, pero pega.",
+    "Que contigo el drama no existe… solo besos pendientes.",
+    "Dicen que tu corazón es fiel… y que tu mirada debería tener advertencia.",
+    "Hablan de ti como alguien que cuida… y que también conquista sin proponérselo.",
+    "Dicen que tu amor es tan real que da miedo.",
+    "Que contigo no hay juegos… solo ternura.",
+    "Dicen que cuando te enamoras, te vuelves poesía.",
+    "Que tu manera de querer es tan honesta que provoca quedarse.",
+    "Dicen que con tus besos hasta las preocupaciones descansan."
   ];
 
-  constructor(private fb: FormBuilder, private firebaseSrv: FirebaseFormService) {
+  titulos = [
+    "Sobre ti se escucha esto:",
+    "Esto es lo que se sabe de ti:",
+    "Lo que se habla de ti es esto:",
+    "Tu fama anda diciendo que:",
+    "Lo que tienes a la gente hablando es esto:",
+    "Tu reputación sentimental dice que:"
+  ];
 
-    // Estructura del formulario
+  constructor(private fb: FormBuilder) {
     this.formulario = this.fb.group({
-      nombres: ['', Validators.required],
-      apellidos: ['', Validators.required],
-      cedula: ['', [
-        Validators.required,
-        Validators.pattern(/^\d{10}$/)  // 10 números exactos
-      ]],
-      correo: ['', [
-        Validators.required,
-        Validators.email
-      ]],
-      celular: ['', [
-        Validators.required,
-        Validators.pattern(/^\d{10}$/) // 10 dígitos para celular
-      ]],
+      nombre: [''],
+      cedula: [''],
+      identificador: ['']
     });
   }
 
-  // Manejar archivo seleccionado
-  cargarArchivo(event: any) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    this.archivo = file;
-
-    // Crear vista previa local
-    this.previewUrl = URL.createObjectURL(file);
-
-    // Identificar tipo
-    this.isImage = file.type.startsWith('image');
-    this.isVideo = file.type.startsWith('video');
+  // Validar que al menos un campo esté lleno
+  private validarAlMenosUno(): boolean {
+    const nombre = this.formulario.get('nombre')?.value?.trim();
+    const cedula = this.formulario.get('cedula')?.value?.trim();
+    return !!nombre || !!cedula;
   }
 
-  // Enviar datos + asignar frase aleatoria
+  cerrarIntroModal() {
+    this.mostrarIntroModal = false;
+  }
+
+  // Enviar formulario
   async enviarFormulario() {
-    // Validación completa
-    if (this.formulario.invalid) {
-      alert("Por favor completa todos los campos correctamente antes de continuar.");
-      this.formulario.markAllAsTouched();
+    console.log("enviando form");
+    
+    if (this.enviando) return;
+    this.enviando = true;
+
+    if (!this.validarAlMenosUno()) {
+      alert("Ingresa nombre o cédula.");
+      this.enviando = false;
       return;
     }
 
-    // Validación de archivo (si deseas hacerlo obligatorio)
-    if (!this.archivo) {
-      alert("Por favor carga una imagen o video.");
-      return;
-    }
-
-    // Elegir frase aleatoria
-    const index = Math.floor(Math.random() * this.frases.length);
-    this.mensajeFinal = this.frases[index];
-
-    // Guardar snapshot del form
-    this.formSnapshot = { ...this.formulario.value };
-
-    // Mostrar modal
-    this.mostrarModal = true;
-
-    // Combinar datos
-    const data = {
-      ...this.formulario.value,
-      mensajeFinal: this.mensajeFinal
-    };
-
+    // Guardar datos en Firestore
     try {
-      await this.firebaseSrv.guardarFormulario(data, this.archivo ?? undefined);
-      console.log('Formulario guardado en Firebase');
-      this.formulario.reset();
-      this.archivo = null;
-      this.previewUrl = null;
-      this.isImage = false;
-      this.isVideo = false;
-
-      alert("Formulario enviado correctamente.");
-
+      await this.firebaseService.guardarFormulario({
+        nombre: this.formulario.get('nombre')?.value || '',
+        cedula: this.formulario.get('cedula')?.value || '',
+        identificador: this.formulario.get('identificador')?.value || ''
+      });
     } catch (error) {
-      console.error('Error al guardar en Firebase', error);
-      alert("Ocurrió un error al enviar el formulario. Inténtalo nuevamente.");
+      console.error("Error al guardar:", error);
     }
+
+    // Generar resultado aleatorio
+    const idx = Math.floor(Math.random() * this.frases.length);
+    this.mensajeFinal = this.frases[idx];
+
+    const t = Math.floor(Math.random() * this.titulos.length);
+    this.tituloResultado = this.titulos[t];
+
+    this.mostrarResultado = true;
+    this.mostrarCupon = false;
+
+    this.enviando = false;
   }
 
+  // Barra de carga para cupón
+  iniciarDescubrimiento() {
+    this.cargando = true;
+    this.progresoCarga = 0;
 
-  // Limpiar formulario y vista previa
-  limpiar() {
+    const intervalo = setInterval(() => {
+      this.progresoCarga += 1.5;
+
+      if (this.progresoCarga >= 100) {
+        clearInterval(intervalo);
+        this.cargando = false;
+        this.mostrarCupon = true;
+      }
+    }, 80);
+  }
+
+  // Permitir solo números en la cédula
+  soloNumeros(event: any) {
+    const valor = event.target.value.replace(/[^0-9]/g, '');
+    this.formulario.get('cedula')?.setValue(valor, { emitEvent: false });
+  }
+
+  esSoloNumerosInvalid(): boolean {
+    const val = this.formulario.get('cedula')?.value;
+    if (!val) return false;
+    return /[^0-9]/.test(val);
+  }
+
+  cedulaTamanoIncorrecto(): boolean {
+    const val = this.formulario.get('cedula')?.value;
+    if (!val) return false;
+    return val.length < 10 || val.length > 13;
+  }
+
+  // Reiniciar vista
+  resetResultado() {
+    this.mostrarResultado = false;
+    this.mostrarCupon = false;
+    this.cargando = false;
+    this.progresoCarga = 0;
     this.formulario.reset();
-    this.previewUrl = null;
-    this.archivo = null;
-  }
-
-  // Cerrar modal y restaurar datos si es necesario
-  cerrarModal() {
-    this.mostrarModal = false;
-
-    // Si Angular borró el form, recuperarlo
-    if (this.formSnapshot) {
-      this.formulario.patchValue(this.formSnapshot);
-    }
   }
 }

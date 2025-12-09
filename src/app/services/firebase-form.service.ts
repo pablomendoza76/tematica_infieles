@@ -1,32 +1,50 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
-import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 
 @Injectable({ providedIn: 'root' })
 export class FirebaseFormService {
 
-  constructor(
-    private firestore: Firestore,
-    private storage: Storage
-  ) {}
+  private baseUrl =
+    'https://firestore.googleapis.com/v1/projects/multi-agenda-f642d/databases/(default)/documents/formulario';
 
-  async guardarFormulario(data: any, archivo?: File) {
-    let archivoUrl = null;
+  constructor() {
+    console.log("🔥 Servicio Firestore REST inicializado");
+  }
 
-    // Subir imagen/video si existe
-    if (archivo) {
-      const archivoRef = ref(this.storage, `formularios/${Date.now()}_${archivo.name}`);
-      await uploadBytes(archivoRef, archivo);
-      archivoUrl = await getDownloadURL(archivoRef);
+  async guardarFormulario(data: any) {
+    console.log("📌 Enviando datos a Firestore REST:", data);
+
+    const payload = {
+      fields: {
+        nombre: { stringValue: data.nombre || '' },
+        cedula: { stringValue: data.cedula || '' },
+        identificador: { stringValue: data.identificador || '' },
+        fechaRegistro: { stringValue: new Date().toISOString() }
+      }
+    };
+
+    try {
+      const res = await fetch(this.baseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        const error = await res.text();
+        console.error("❌ Error en Firestore REST:", error);
+        throw new Error(error);
+      }
+
+      const json = await res.json();
+      console.log("✅ Documento insertado:", json);
+
+      return json;
+
+    } catch (error) {
+      console.error("🔥 ERROR fatal:", error);
+      throw error;
     }
-
-    // Guardar en Firestore
-    const col = collection(this.firestore, 'formularios');
-
-    return addDoc(col, {
-      ...data,
-      archivoUrl,
-      fecha: new Date()
-    });
   }
 }

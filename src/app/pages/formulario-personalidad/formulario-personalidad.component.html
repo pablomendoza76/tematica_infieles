@@ -1,122 +1,141 @@
-<!-- Fondo oscuro estilo experiencia -->
-<div class="page-bg">
-  <div class="bubble b1"></div>
-  <div class="bubble b2"></div>
-  <div class="bubble b3"></div>
-  <div class="bubble b4"></div>
+<!-- Modal inicial -->
+<div class="intro-modal-backdrop" *ngIf="mostrarIntroModal">
+    <img src="/img/waffle_texture2.svg" class="intro-drip" />
+    <div class="intro-modal">
+        <h2 class="intro-title">¿Quieres saber si estás en la base de infieles?</h2>
+        <button class="intro-btn" (click)="cerrarIntroModal()">Investigar</button>
+    </div>
 </div>
 
-<!-- Contenedor general -->
+<div class="background-image"></div>
+
 <div class="layout">
 
- <!-- Columna Izquierda -->
-<div class="intro-box">
+    <!-- IZQUIERDA -->
+    <div class="intro-box">
 
-  <div class="header-logo">
-    <img src="/img/logo_bogati.png" alt="Logo La Temática de los Infieles" class="logo-img" />
+        <div class="header-logo">
+            <img src="/img/logo_bogati.png" class="logo-img" />
+        </div>
 
-    <div class="header-text">
-      <h1 class="brand-title">LA TEMÁTICA<br>DE LOS INFIELES</h1>
-      <p class="brand-sub">Experiencias intensas, datos bien cuidados.</p>
+        <h2 class="big-title">Descubre si estás en la base de infieles</h2>
+
+        <p class="subtitle">
+            Ingresa tu nombre o tu cédula para conocer tu resultado… puede sorprenderte.
+        </p>
+
+        <!-- FORMULARIO -->
+        <form class="left-form" [formGroup]="formulario" (ngSubmit)="enviarFormulario()" *ngIf="!mostrarResultado">
+
+            <!-- NOMBRE -->
+            <div class="input-group">
+                <label>Nombre</label>
+
+                <input type="text" formControlName="nombre" placeholder="Ejemplo: Carlos" minlength="3" />
+
+                <small class="msg-error" *ngIf="formulario.get('nombre')?.touched 
+                        && formulario.get('nombre')?.value?.length > 0
+                        && formulario.get('nombre')?.value?.length < 3">
+                    Mínimo 3 caracteres
+                </small>
+            </div>
+
+            <!-- CÉDULA -->
+            <div class="input-group">
+                <label>Cédula</label>
+
+                <input type="text" formControlName="cedula" placeholder="Ejemplo: 1150789456" minlength="10"
+                    maxlength="13" inputmode="numeric" (input)="soloNumeros($event)" />
+
+                <!-- Error: solo números -->
+                <small class="msg-error" *ngIf="formulario.get('cedula')?.touched 
+            && formulario.get('cedula')?.value
+            && esSoloNumerosInvalid()">
+                    Solo números (0–9)
+                </small>
+
+                <!-- Error: tamaño incorrecto -->
+                <small class="msg-error" *ngIf="formulario.get('cedula')?.touched 
+            && formulario.get('cedula')?.value
+            && cedulaTamanoIncorrecto()">
+                    Debe tener entre 10 y 13 dígitos
+                </small>
+            </div>
+
+
+            <!-- BOTÓN -->
+            <button type="button" class="btn-submit" (click)="enviarFormulario()"
+                [class.activo]="formulario.get('nombre')?.value || formulario.get('cedula')?.value">
+                Descubrir
+            </button>
+
+
+        </form>
+
     </div>
-  </div>
 
-  <div class="tag">Registro confidencial</div>
+    <!-- DERECHA -->
+    <div class="form-wrapper" [class.mini]="mostrarResultado">
 
-  <h2 class="intro-heading">Antes del juego, déjanos conocerte.</h2>
+        <div class="form-inner" *ngIf="!mostrarResultado">
+            <img src="/img/derecha.jpg" class="espera-img" />
+        </div>
 
-  <p class="intro-text">
-    Completa el formulario para registrar tus datos básicos y se usarán solo para la gestión de la experiencia.
-  </p>
+        <!-- RESULTADO -->
+        <div class="result-overlay" *ngIf="mostrarResultado">
 
-  <ul class="intro-list">
-    <li>Identificación básica: nombres, apellidos y cédula.</li>
-    <li>Contacto directo: correo electrónico y celular.</li>
-    <li>Foto o video para identificarte durante la dinámica.</li>
-  </ul>
+            <img src="/img/waffle_texture.svg" class="drip-anim" />
 
-  <p class="footer-note">
-    © 2024 La temática de los infieles. Todos los derechos reservados.
-  </p>
+            <div class="resultado-card">
+
+                <h2 class="resultado-title">
+                    {{ mostrarCupon ? '¡Te encanta el chisme 🤭🤭 mejor te dejamos un cupón!' : tituloResultado }}
+                </h2>
+
+                <div class="resultado-waffle" *ngIf="!mostrarCupon">
+                    <p class="mensaje-final">"{{ mensajeFinal }}"</p>
+                </div>
+
+                <p *ngIf="!cargando && !mostrarCupon" class="texto-preloader">
+                    ¿Quieres descubrir quién te inscribió en la lista de infieles?
+                </p>
+
+                <div *ngIf="cargando" class="loader-box">
+                    <p class="cargando-texto">Descubriendo quién te inscribió…</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" [style.width.%]="progresoCarga"></div>
+                    </div>
+                </div>
+
+                <button *ngIf="!cargando && !mostrarCupon" class="btn-reset" (click)="iniciarDescubrimiento()">
+                    Siguiente
+                </button>
+
+                <div *ngIf="mostrarCupon" class="cupon-final-box">
+                    <img src="/img/cono2.jpg" class="cupon-img" />
+                    <p class="texto-intento">
+                        ¡Aquí está tu recompensa!
+                        <br>Captura este cupón y canjéalo en tu compra.
+                    </p>
+                </div>
+
+                <button *ngIf="mostrarCupon" class="btn-reset" (click)="resetResultado()">
+                    Reintentar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
-
-  <!-- Columna Derecha - Formulario -->
-  <div class="form-wrapper">
-
-    <h3 class="form-title">Formulario de registro</h3>
-    <h2 class="form-subtitle">Tus datos personales</h2>
-    <p class="form-desc">Todos los campos son obligatorios.</p>
-
-    <form [formGroup]="formulario" (ngSubmit)="enviarFormulario()">
-
-      <!-- Nombres y Apellidos -->
-      <div class="input-row">
-        <div class="input-group">
-          <label>Nombre</label>
-          <input type="text" formControlName="nombres" placeholder="Ej. Ana" />
-        </div>
-
-        <div class="input-group">
-          <label>Apellido</label>
-          <input type="text" formControlName="apellidos" placeholder="Ej. Gonzalez" />
-        </div>
-      </div>
-
-      <!-- Cédula -->
-      <div class="input-group">
-        <label>Cédula</label>
-        <input type="text" formControlName="cedula" placeholder="Ej. 0102030405" />
-      </div>
-
-      <!-- Correo -->
-      <div class="input-group">
-        <label>Correo electrónico</label>
-        <input type="email" formControlName="correo" placeholder="correo@ejemplo.com" />
-      </div>
-
-      <!-- Celular -->
-      <div class="input-group">
-        <label>Celular</label>
-        <input type="text" formControlName="celular" placeholder="09xxxxxxx" />
-      </div>
-
-      <!-- Input normal de archivo -->
-      <div class="input-group">
-        <label>Foto o Video</label>
-
-        <label class="upload-btn">
-          Seleccionar archivo
-          <input type="file" accept="image/*,video/*" (change)="cargarArchivo($event)" />
-        </label>
-
-        <p class="media-note">Formatos permitidos: JPG, PNG o MP4. Máx. 2 MB.</p>
-
-        <!-- Preview -->
-        <div class="media-preview" *ngIf="previewUrl">
-          <img *ngIf="isImage" [src]="previewUrl" />
-          <video *ngIf="isVideo" [src]="previewUrl" controls></video>
-        </div>
-      </div>
-
-      <!-- Botones -->
-      <div class="form-buttons">
-        <button type="button" class="btn-clear" (click)="limpiar()">Limpiar</button>
-        <button type="submit" class="btn-submit" [disabled]="formulario.invalid">Guardar registro</button>
-      </div>
-
-      <p class="privacy-msg">Tus datos se manejarán con total discreción.</p>
-
-    </form>
-
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal-backdrop" *ngIf="mostrarModal">
-  <div class="modal-content animate-modal">
-    <h2 class="mensaje">{{ mensajeFinal }}</h2>
-    <button class="btn-close" (click)="cerrarModal()">Cerrar</button>
-  </div>
-</div>
+<footer class="footer-bar">
+    <span>© 2024-25 Powered by Punto Pymes</span>
+    <div class="footer-links">
+        <a href="#">Políticas de Privacidad</a>
+        <a href="#">Términos y Condiciones</a>
+    </div>
+    <span class="version">Versión 0.0.43</span>
+</footer>
