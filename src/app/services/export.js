@@ -13,7 +13,12 @@ const db = getFirestore(app);
 
 async function exportToXLSX() {
   const snap = await getDocs(collection(db, "formulario"));
-  const rows = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+  const rows = snap.docs.map(d => {
+    const data = d.data();
+    delete data.identificador; // no incluir esta columna
+    return { id: d.id, ...data };
+  });
 
   const ws = XLSX.utils.json_to_sheet(rows);
   const wb = XLSX.utils.book_new();

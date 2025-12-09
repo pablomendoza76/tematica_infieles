@@ -1,1 +1,141 @@
-<router-outlet></router-outlet>
+<!-- Modal inicial -->
+<div class="intro-modal-backdrop" *ngIf="mostrarIntroModal">
+    <img src="/img/waffle_texture2.svg" class="intro-drip" />
+    <div class="intro-modal">
+        <h2 class="intro-title">¿Quieres saber si estás en la base de infieles?</h2>
+        <button class="intro-btn" (click)="cerrarIntroModal()">Investigar</button>
+    </div>
+</div>
+
+<div class="background-image"></div>
+
+<div class="layout">
+
+    <!-- IZQUIERDA -->
+    <div class="intro-box">
+
+        <div class="header-logo">
+            <img src="/img/logo_bogati.png" class="logo-img" />
+        </div>
+
+        <h2 class="big-title">Descubre si estás en la base de infieles</h2>
+
+        <p class="subtitle">
+            Ingresa tu nombre o tu cédula para conocer tu resultado… puede sorprenderte.
+        </p>
+
+        <!-- FORMULARIO -->
+        <form class="left-form" [formGroup]="formulario" (ngSubmit)="enviarFormulario()" *ngIf="!mostrarResultado">
+
+            <!-- NOMBRE -->
+            <div class="input-group">
+                <label>Nombre</label>
+
+                <input type="text" formControlName="nombre" placeholder="Ejemplo: Carlos" minlength="3" />
+
+                <small class="msg-error" *ngIf="formulario.get('nombre')?.touched 
+                        && formulario.get('nombre')?.value?.length > 0
+                        && formulario.get('nombre')?.value?.length < 3">
+                    Mínimo 3 caracteres
+                </small>
+            </div>
+
+            <!-- CÉDULA -->
+            <div class="input-group">
+                <label>Cédula</label>
+
+                <input type="text" formControlName="cedula" placeholder="Ejemplo: 1150789456" minlength="10"
+                    maxlength="13" inputmode="numeric" (input)="soloNumeros($event)" />
+
+                <!-- Error: solo números -->
+                <small class="msg-error" *ngIf="formulario.get('cedula')?.touched 
+            && formulario.get('cedula')?.value
+            && esSoloNumerosInvalid()">
+                    Solo números (0–9)
+                </small>
+
+                <!-- Error: tamaño incorrecto -->
+                <small class="msg-error" *ngIf="formulario.get('cedula')?.touched 
+            && formulario.get('cedula')?.value
+            && cedulaTamanoIncorrecto()">
+                    Debe tener entre 10 y 13 dígitos
+                </small>
+            </div>
+
+
+            <!-- BOTÓN -->
+            <button type="button" class="btn-submit" (click)="enviarFormulario()"
+                [class.activo]="formulario.get('nombre')?.value || formulario.get('cedula')?.value">
+                Descubrir
+            </button>
+
+
+        </form>
+
+    </div>
+
+    <!-- DERECHA -->
+    <div class="form-wrapper" [class.mini]="mostrarResultado">
+
+        <div class="form-inner" *ngIf="!mostrarResultado">
+            <img src="/img/derecha.jpg" class="espera-img" />
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="result-overlay" *ngIf="mostrarResultado">
+
+            <img src="/img/waffle_texture.svg" class="drip-anim" />
+
+            <div class="resultado-card">
+
+                <h2 class="resultado-title">
+                    {{ mostrarCupon ? '¡Te encanta el chisme 🤭🤭 mejor te dejamos un cupón!' : tituloResultado }}
+                </h2>
+
+                <div class="resultado-waffle" *ngIf="!mostrarCupon">
+                    <p class="mensaje-final">"{{ mensajeFinal }}"</p>
+                </div>
+
+                <p *ngIf="!cargando && !mostrarCupon" class="texto-preloader">
+                    ¿Quieres descubrir quién te inscribió en la lista de infieles?
+                </p>
+
+                <div *ngIf="cargando" class="loader-box">
+                    <p class="cargando-texto">Descubriendo quién te inscribió…</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" [style.width.%]="progresoCarga"></div>
+                    </div>
+                </div>
+
+                <button *ngIf="!cargando && !mostrarCupon" class="btn-reset" (click)="iniciarDescubrimiento()">
+                    Siguiente
+                </button>
+
+                <div *ngIf="mostrarCupon" class="cupon-final-box">
+                    <img src="/img/cono2.jpg" class="cupon-img" />
+                    <p class="texto-intento">
+                        ¡Aquí está tu recompensa!
+                        <br>Captura este cupón y canjéalo en tu compra.
+                    </p>
+                </div>
+
+                <button *ngIf="mostrarCupon" class="btn-reset" (click)="resetResultado()">
+                    Reintentar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<footer class="footer-bar">
+    <span>© 2024-25 Powered by Punto Pymes</span>
+    <div class="footer-links">
+        <a href="#">Políticas de Privacidad</a>
+        <a href="#">Términos y Condiciones</a>
+    </div>
+    <span class="version">Versión 0.0.43</span>
+</footer>

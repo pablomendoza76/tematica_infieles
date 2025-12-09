@@ -1,0 +1,854 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* --- ESTILOS BASE Y TIPOGRAFÍA --- */
+* {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Desktop: Previene el scroll global */
+}
+
+/* --- FONDO --- */
+.background-image {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/img/fondo_bogati.svg');
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
+/* --- LAYOUT PRINCIPAL (DESKTOP) --- */
+.layout {
+  display: flex;
+  height: calc(100vh - 60px);
+  width: 90%;
+  padding: 90px 60px;
+  gap: 1px;
+  align-items: center;
+  overflow: hidden;
+  margin-left: 150px;
+}
+
+/* --- INTRO BOX --- */
+.intro-box {
+  width: 52%;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  padding-left: 10px;
+}
+.intro-box * { text-align: left; } /* Por defecto en desktop */
+.header-logo .logo-img { width: 150px; margin-bottom: 4px; }
+.big-title {
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.22;
+  max-width: 580px;
+  color: #ff9f35;
+}
+
+.subtitle {
+  font-size: 16.5px;
+  line-height: 1.45;
+  max-width: 520px;
+  color: #f2f2f2;
+  margin-top: -6px;
+}
+.intro-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.intro-list li {
+  display: flex;
+  align-items: flex-start;
+  font-size: 15.5px;
+  max-width: 520px;
+  line-height: 1.35;
+  color: #eaeaea;
+}
+.intro-list .bullet {
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  min-height: 26px;
+  aspect-ratio: 1 / 1;
+  background: #ffe7c0;
+  color: #a4630e;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
+  font-size: 14px;
+  box-shadow: 0 0 4px rgba(255,255,255,0.15);
+}
+
+/* --- FORMULARIO & INPUTS --- */
+.form-wrapper {
+  width: 680px;
+  height: 45vh;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.22);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  transition: height 0.75s cubic-bezier(.25,.8,.25,1);
+}
+
+
+.form-wrapper.mini {
+  height: 620px;
+  transition: height 0.5s ease;
+}
+/* Cupón activo */
+.form-wrapper.mini.cupon-activo {
+  height: auto !important;
+  max-height: none !important;
+}
+
+.form-inner {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 32px 40px 32px;
+  scrollbar-width: thin;
+}
+.form-title { font-size: 20px; font-weight: 700; text-align: center; }
+.form-desc { font-size: 13px; text-align: center; margin-bottom: 20px; color: #666; }
+.input-row { display: flex; gap: 12px; margin-bottom: 14px; }
+.input-group { width: 60%; margin-bottom: 14px; }
+.input-group label { font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+.input-group input {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid #d6d6d6;
+  border-radius: 10px;
+  font-size: 13px;
+  background: #fff;
+}
+.input-group input:focus {
+  border-color: #ff9d32;
+  box-shadow: 0 0 0 2px rgba(255, 157, 50, 0.22);
+}
+
+/* Dropzone y Previews */
+.dropzone {
+  width: 100%;
+  padding: 20px;
+  border: 2px dashed #d1d1d1;
+  border-radius: 12px;
+  background: #fafafa;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.dropzone input { display: none; }
+.media-preview img, .media-preview video {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 10px;
+  display: block;
+  margin: 12px auto 0 auto;
+}
+.checkbox-row { display: flex; align-items: center; gap: 8px; margin: 12px 0; }
+.checkbox-row span { font-size: 13px; }
+
+/* Botones */
+/* Estado por defecto */
+.btn-submit {
+  width: 60%;
+  background: #d88a25;   /* Naranja más oscuro */
+  color: #000;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: background .3s ease, opacity .3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Cuando el formulario es válido (nombre o cédula llenos) */
+.btn-submit.activo {
+  background: #ff9f35;  /* Naranja brillante */
+  opacity: 1;
+}
+
+
+.msg-error {
+  color: #ff4d4d;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+.btn-clear {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  background: transparent;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+}
+
+/* --- FOOTER (DESKTOP) --- */
+.footer-bar {
+  width: 100%;
+  height: 60px;
+  background: #eeeeee;
+  color: #555;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 50px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+}
+.footer-links { display: flex; gap: 16px; }
+.footer-links a { color: #444; text-decoration: none; }
+
+/* --- MODAL --- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+.modal-content {
+  background: #fff;
+  padding: 22px;
+  border-radius: 12px;
+  max-width: 300px;
+  text-align: center;
+}
+.modal-content .mensaje { font-size: 18px; font-weight: 600; margin-bottom: 12px; }
+.modal-content .btn-close {
+  background: #f8b250;
+  color: #000;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* --- RESULTADO (OVERLAY & ANIMACIONES) --- */
+.result-overlay {
+  position: absolute; /* En desktop es relativo al form-wrapper */
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden;
+  z-index: 50;
+  pointer-events: none;
+}
+/* === Centrado correcto del resultado en DESKTOP === */
+.result-overlay {
+  display: flex;
+  justify-content: center;      /* Centra horizontal */
+  align-items: center;          /* Centra vertical */
+  padding-top: 0 !important;
+  pointer-events: auto;
+}
+
+/* GOTEO (Desktop) */
+.drip-anim {
+  position: absolute;
+  top: -120%;
+  left: 50%;
+
+
+
+
+  transform: translateX(-50%);
+  width: 160%;
+  height: auto;
+  z-index: 5;              /*  SIEMPRE debajo de la tarjeta */
+  opacity: 0;
+  pointer-events: none;
+  animation: caerGoteo 2.8s cubic-bezier(.16,.84,.44,1) forwards;
+}
+
+@keyframes caerGoteo {
+  0% {
+    transform: translate(-50%, -120%) scale(1.05);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  70% {
+    transform: translate(-50%, 10%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -10%) scale(1.02);
+    opacity: 0;            /*  SE DESAPARECE COMPLETAMENTE */
+  }
+}
+
+
+/* Tarjeta de resultado (Desktop) */
+.resultado-card {
+  position: relative;
+  z-index: 80;
+  width: 88%;
+  max-width: 540px;
+  background: #ffffff;
+  border-radius: 26px;
+  padding: 32px 28px 46px 28px;
+  margin-top: 10px;
+  opacity: 0;
+  transform: translateY(40px) scale(0.97);
+  animation: aparecerTarjeta 1.4s cubic-bezier(.15,.75,.35,1) 1.55s forwards;
+  pointer-events: auto;
+  height: auto !important; /* Adaptable a contenido (cupón) */
+  max-height: none !important;
+}
+@keyframes aparecerTarjeta {
+  0%   { opacity: 0; transform: translateY(40px) scale(0.97); }
+  60%  { opacity: 1; transform: translateY(10px) scale(1); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.resultado-title { font-size: 26px; font-weight: 700; text-align: center; margin-bottom: 22px; }
+
+/* Bloque Waffle */
+.resultado-waffle {
+  width: 110%;
+  margin-left: -5%;
+  background: url('/img/frm.svg') center/cover;
+  padding: 54px 36px;
+  border-radius: 26px;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 32px;
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  animation: animWaffle 1.2s cubic-bezier(.2,.8,.3,1) 1.75s forwards;
+}
+@keyframes animWaffle {
+  0%   { opacity: 0; transform: translateY(20px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Texto y Botón Reset */
+.texto-intento {
+  color: #444;
+  font-size: 15px;
+  text-align: center;
+  margin-bottom: 18px;
+  opacity: 0;
+  animation: fadeIn 0.8s ease 2.1s forwards;
+}
+@keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+.btn-reset {
+  display: block;
+  margin: 0 auto;
+  background: #ff9f35;
+  padding: 12px 26px;
+  border-radius: 12px;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 16px;
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.8s cubic-bezier(.25,.8,.25,1) 2.25s forwards;
+  transition: background 0.25s ease, transform 0.3s ease;
+}
+@keyframes fadeUp {
+  0%   { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.btn-reset:hover { background: #e68c2f; transform: translateY(-2px); }
+
+/* --- CUPÓN --- */
+.cupon-final-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.cupon-img {
+  width: 70%;
+  max-width: 360px;
+  min-width: 240px;
+  display: block;
+  margin: 0 auto;
+  border-radius: 18px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+  object-fit: contain;
+  transition: transform .25s ease;
+}
+.cupon-img:hover { transform: scale(1.02); }
+
+
+/* --- BARRA DE PROGRESO --- */
+.cargando-cupon-box { width: 100%; text-align: center; margin-top: 18px; margin-bottom: 20px; }
+.cargando-texto { font-size: 15px; font-weight: 600; color: #444; margin-bottom: 10px; }
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background: #eaeaea;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.1);
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ff9f35, #ffb957);
+  border-radius: 10px;
+  transition: width 0.15s linear;
+}
+
+
+/* =================================================================
+   MEDIA QUERIES
+================================================================= */
+
+/* --- TABLET (769px a 1024px) --- */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .layout {
+    width: 100% !important;
+    margin-left: 0 !important;
+    padding: 50px 30px !important;
+    gap: 40px !important;
+    justify-content: center !important;
+  }
+  .intro-box { width: 45% !important; padding: 0 10px !important; }
+  .big-title { font-size: 36px !important; }
+  .subtitle { font-size: 15px !important; }
+  .form-wrapper { width: 420px !important; height: 80vh !important; }
+  .form-inner { padding: 26px !important; }
+  .drip-anim { top: -500px !important; width: 120% !important; margin-left: -10% !important; }
+  .resultado-card { margin-top: 90px !important; }
+  .resultado-waffle { width: 110% !important; margin-left: -5% !important; }
+}
+
+/* --- MÓVIL (≤ 768px) --- */
+@media (max-width: 768px) {
+  
+  /* Bloqueo de scroll y viewport */
+  html, body {
+    overflow-y: auto !important;
+    height: auto !important;
+  }
+  body.modo-resultado {
+    overflow: hidden !important;
+    height: 100dvh !important; /* dvh para mejor compatibilidad móvil */
+  }
+
+  /* Layout */
+  .layout {
+    flex-direction: column !important;
+    width: 100% !important;
+    padding: 40px 20px !important;
+    margin: 0 !important;
+    gap: 10px;
+    height: auto !important;
+    overflow: visible !important;
+    padding-bottom: 110px !important;
+  }
+
+  /* Intro */
+  /* --- INTRO --- */
+  .intro-box, .intro-box * {
+    width: 100% !important;
+    padding: 0 10px !important;
+    text-align: center !important;
+  }
+  .big-title { font-size: 30px !important; }
+  .subtitle { font-size: 15px !important; }
+  
+  /* LISTA DE INTRODUCCIÓN */
+  .intro-list {
+    /* Si se requiere centrar la lista completa */
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .intro-list li {
+    /* Alineación de la burbuja y texto */
+    justify-content: center !important; 
+    align-items: center !important; 
+    padding: 6px 0 !important;
+    margin: 0 auto !important;
+  }
+
+  /*  AJUSTE CRÍTICO: BULLET/ESFERA */
+  .intro-list .bullet {
+    width: 28px !important;       /* Tamaño visible */
+    height: 28px !important;      /* Tamaño visible */
+    min-width: 28px !important;   /* Asegura que no se achique */
+    min-height: 28px !important;
+    aspect-ratio: 1 / 1 !important; /* Mantiene la forma redonda */
+    margin-right: 10px !important;
+    font-size: 15px !important;   /* Asegura que el número se lea bien */
+    /* Asegúrate de que el color de fondo y texto sean legibles */
+    background: #ffe7c0 !important; 
+    color: #a4630e !important;
+    z-index: 10 !important; /* Por si algo se superpone */
+  }
+  .big-title { font-size: 30px !important; }
+  .subtitle { font-size: 15px !important; }
+
+  /* Formulario */
+  .form-wrapper {
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 16px !important;
+    overflow: visible !important;
+  }
+  .form-inner { padding: 22px 18px !important; }
+  .input-row { flex-direction: column !important; gap: 12px !important; }
+  
+  /* Ajuste de cupón */
+  .cupon-img { width: 85%; max-width: 300px; }
+
+  /* Resultado - Overlay y Centrado */
+  .result-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100dvh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important; /* Centra el contenido en el viewport */
+    align-items: center !important;
+    padding-top: 0 !important;
+    background: rgba(0,0,0,0.05) !important;
+    overflow: hidden !important;
+    z-index: 200 !important;
+  }
+  
+  /* Goteo (Fijo y Amplio) */
+  .drip-anim {
+    position: fixed !important;
+    top: -60% !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 260% !important;
+    height: auto !important;
+    z-index: 250 !important;
+    animation: caerFullMobile 2.8s cubic-bezier(.16,.84,.44,1) forwards !important;
+  }
+  @media (max-width: 768px) {
+  .drip-anim {
+    animation: caerCascadaMobile 3.2s cubic-bezier(.22,.68,.32,1) forwards !important;
+  }
+
+  @keyframes caerCascadaMobile {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -140%) scale(1.05);
+    }
+    25% {
+      opacity: 1;
+      transform: translate(-50%, -70%) scale(1);
+    }
+    65% {
+      opacity: 1;
+      transform: translate(-50%, 10%) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, 40%) scale(1.05);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .drip-anim {
+    width: 200% !important;
+    top: -130% !important;
+  }
+}
+
+
+  /* Tarjeta Resultado (Centrada y Scrollable si es necesario) */
+  .resultado-card {
+    position: relative !important; /* Volvemos a relative para centrado dentro del flex (overlay) */
+    width: 92% !important;
+    max-width: 420px !important;
+    max-height: calc(100dvh - 40px) !important;
+    overflow-y: auto !important;
+    background: #fff !important;
+    border-radius: 22px !important;
+    padding: 26px 20px 34px !important;
+    margin: 0 !important;
+    z-index: 350 !important;
+    animation: aparecerTarjeta 1.4s cubic-bezier(.15,.75,.35,1) 1.55s forwards; /* Mantenemos animación desktop */
+  }
+  .resultado-card, .resultado-card * {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .resultado-waffle {
+    width: 100% !important;
+    padding: 30px 20px !important;
+    margin-left: 0 !important;
+  }
+
+  /* Footer (Oculto en modo resultado, transición al teclear) */
+  .footer-bar {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    padding: 14px 10px !important;
+    background: #eee !important;
+    z-index: 999 !important;
+    display: flex !important;
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Añadida transición */
+  }
+
+  /* Ocultar en modo resultado */
+  body.modo-resultado .footer-bar {
+    display: none !important;
+  }
+  
+  /* Ocultar si hay input enfocado (teclado aparece) */
+  body:has(input:focus),
+  body:has(textarea:focus) {
+    padding-bottom: 0 !important;
+  }
+  body:has(input:focus) .footer-bar,
+  body:has(textarea:focus) .footer-bar {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(100%) !important;
+  }
+}
+
+/* ============================
+   ANIMACIÓN DEL FONDO (WEB)
+============================ */
+body.mostrar-modal .background-image {
+  animation: fondoCascada 3s cubic-bezier(.16,.84,.44,1) forwards;
+}
+
+@keyframes fondoCascada {
+  0%   { opacity:0; transform: translateY(-40%); }
+  40%  { opacity:1; transform: translateY(-25%); }
+  70%  { transform: translateY(-22%); }
+  100% { transform: translateY(-20%); } /* Solo cae 20% */
+}
+
+
+/* ============================
+   CASCADA DEL GOTEO (WEB)
+============================ */
+.intro-drip {
+  position: absolute;
+  top: -140%;
+  left: 50%;
+  width: 160%;
+  transform: translateX(-50%);
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+  animation: dripCascada 3s cubic-bezier(.18,.65,.3,1) forwards;
+}
+
+@keyframes dripCascada {
+  0%   { opacity:0; transform: translate(-50%, -140%); }
+  35%  { opacity:1; }
+  70%  { transform: translate(-50%, 5vh); }
+  100% { transform: translate(-50%, 20vh); opacity:1; } /* Solo 20% visible */
+}
+
+
+/* ============================
+   BACKDROP + MODAL
+============================ */
+.intro-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5000;
+  opacity: 0;
+  animation: fade .4s ease forwards;
+}
+
+@keyframes fade {
+  to { opacity:1; }
+}
+
+.intro-modal {
+  position: relative;
+  width: 92%;
+  max-width: 360px;
+  background: #fff;
+  padding: 38px 26px 30px;
+  border-radius: 22px;
+  text-align: center;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.18);
+  z-index: 10;
+
+  opacity: 0;
+  transform: translateY(20px) scale(.9);
+  animation: modalIn .65s ease-out forwards;
+  animation-delay: 2.6s;
+}
+
+@keyframes modalIn {
+  to { opacity:1; transform: translateY(0) scale(1); }
+}
+
+
+/* ============================
+   TEXTO Y BOTÓN
+============================ */
+.intro-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #2d1a0b;
+  margin-bottom: 18px;
+}
+
+.intro-btn {
+  width: 100%;
+  padding: 12px;
+  background: #ff9f35;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+/* =====================================================
+   MÓVIL — CAÍDA DE 80% (Moderada, NO Exagerada)
+===================================================== */
+@media (max-width: 768px) {
+
+  /* Fondo — caída más grande pero CONTROLADA */
+  body.mostrar-modal .background-image {
+    animation: fondoCascadaMobile 3.2s cubic-bezier(.16,.84,.44,1) forwards;
+  }
+
+  @keyframes fondoCascadaMobile {
+    0%   { opacity:0; transform: translateY(-100%); }
+    40%  { opacity:1; transform: translateY(-65%); }
+    75%  { transform: translateY(-45%); }
+    100% { transform: translateY(-20%); } /* Resultado visual: 80% cae sin romper nada */
+  }
+
+}
+/* ============================
+   Goteo móvil — ahora cae MÁS ABAJO
+============================ */
+@media (max-width: 768px) {
+
+  .intro-drip {
+    width: 200%;
+    animation: dripCascadaMobile 3.2s cubic-bezier(.18,.65,.3,1) forwards;
+  }
+
+  @keyframes dripCascadaMobile {
+    0%   { opacity:0; transform: translate(-50%, -130%); }
+    40%  { opacity:1; }
+    80%  { transform: translate(-50%, 80vh); }  /*  BAJA MÁS */
+    100% { transform: translate(-50%, 55vh); opacity:1; } /*  MUCHO MÁS ABAJO */
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-links a {
+    display: none !important;
+  }
+
+  .footer-links a:nth-child(2) {
+    display: inline-block !important;  /* Términos y condiciones */
+  }
+
+  .footer-bar span.version {
+    display: none !important;
+  }
+}
+
+ 
+
+.espera-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /*  Hace que la imagen Llene el contenedor */
+  border-radius: 0;    /* Quita bordes si no los quieres */
+  display: block;
+}
+
+.form-inner {
+ width: 100%;
+ height: 100%;
+ padding: 0 !important;     
+ overflow: hidden;
+ display: flex;
+ 
+ /*  AJUSTE CLAVE: Centrado de contenido con Flexbox */
+ justify-content: center; /* Centra horizontalmente */
+ align-items: center;   /* Centra verticalmente */
+}
+
+@media (max-width: 768px) {
+  .espera-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 22px !important;   /*  Respeta bordes en móvil */
+    display: block;
+  }
+
+  /* Asegura que el contenedor también recorte la imagen */
+  .resultado-card,
+  .form-wrapper {
+    overflow: hidden !important;
+    border-radius: 22px !important;   /*  Igualar borde del contenedor */
+  }
+}
